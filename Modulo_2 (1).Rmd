@@ -1,0 +1,357 @@
+---
+title: "Modulo_2"
+author: "Paulina Maselli"
+date: "2026-04-01"
+output:
+  pdf_document: 
+  latex_engine: xelatex
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+## Primeros comados de R
+
+R es un lenguaje muy parecido a Matlab y permite el trabajo con matrices
+
+```{r}
+A=38
+A=40
+B=60
+C=B-A
+C
+
+```
+
+## Uso de datasets o base de datos internos de R
+
+Usando el comando data en la consola obtenemos distintos datos ya cargados en la base de datos de R, estos datos estan dados en tablas, en las cuales podemos elegir la columna que queremos ver si usamos el signo \$ despues del dato
+
+```{r cars}
+summary(cars)
+```
+
+## Comando Plot
+
+Nos permite graficar datos deseados, pudiendo asignar el nombre de las variables, hacer cambios al grafico. Para saber utilizar el comando escribimos **?plot** en la consola y podremos abrir una ventana explicativa, ahi tambien podemos ver los tipos de lineas que hay y que letra usar para cada una.
+
+```{r pressure,echo=FALSE}
+plot(pressure,main="Presion del gas ideal",ylab="hPa",xlab="K",type="l")
+```
+
+## Funciones estadisticas
+
+Vemos en todos estos graficos, 350 valores,valor promedio 21 y un desvio estandar de 5. El comando rnorm, nos da la distribución normal para el lenguaje R.En caso de tener dudas, escribir en la consola **?rnorm**
+
+```{r}
+z1<-rnorm(350,21,5)
+z1
+```
+
+```{r}
+plot(z1)
+w1<-length(z1)
+w1
+x1<-(500:849)
+x1
+plot(z1,x1)
+```
+
+```{r}
+hist(z1,main="Histograma de edades",breaks=50)
+```
+
+```{r}
+density(z1)
+```
+
+```{r}
+plot(density(z1))
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Ejercicio 1 de algoritmos
+
+Consigna: Las últimas 3 cifras de mi DNI son 738, crear una variable que tenga ese numero
+
+```{r}
+DNI=738
+```
+
+Consigna: Crear un vector que tenga todos los numeros enteros desde el 1 al 738.
+
+```{r}
+Secuencia_dni<-(1:738)
+Secuencia_dni
+```
+
+## Ejercicio 2:
+Calcular la suma de todos los valores del vector Secuencia_dni
+```{r}
+total<-0
+Valor_final<-length(Secuencia_dni)
+for(i in 1:Valor_final) {
+total<-total+i
+}
+total
+```
+
+## Ejercicio 3
+Repetir el ejercicio anterior en Phyton
+```{python}
+suma = 0
+for i in range(1,738):
+  suma += i
+  print(suma)
+```
+
+## Ejercicio 4
+Cuánto tarda en correr el código del ejercicio 2?
+
+```{r}
+inicio<-Sys.time()
+total<-0
+Valor_final<-length(Secuencia_dni)
+for(i in 1:Valor_final){
+  total<-total+i
+}
+total
+final<-Sys.time()
+final-inicio
+```
+
+## Ejercico 5
+Resolver el ejercicio anterior utilizando la cabeza de Gauss
+
+# Ejercicios profe:
+
+## 1.4 Generar un vector secuencia
+```{r}
+#  Generar secuencia con bucle 'for' 
+# Primero inicializamos el vector 
+system.time({
+  A <- 0
+  for (i in 1:50000) {
+    A[i] <- (i * 2)
+  }
+})
+# Verificamos los resultados
+head(A)
+tail(A)
+
+
+system.time({
+  B <- seq(from = 2, to = 100000, by = 2)
+})
+
+# Verificamos los resultados
+head(B)
+tail(B)
+```
+
+## 1.5 Implementación de serie de Fibonacci
+```{r}
+# Definimos la cantidad de elementos de la serie que queremos calcular
+n<-30  
+
+#  Método 1: Bucle 'for' con pre-asignación 
+system.time({
+  fib <- numeric(n)
+  fib[1] <- 0
+  fib[2] <- 1
+  for (i in 3:n) {
+    fib[i] <- fib[i-1] + fib[i-2]
+  }
+})
+
+# Ver los primeros resultados
+print("Primeros números de la serie:")
+head(fib, 10)
+
+#  Método 2: Función Recursiva 
+
+fib_recursiva <- function(k) {
+  if (k == 0) return(0)
+  if (k == 1) return(1)
+  return(fib_recursiva(k - 1) + fib_recursiva(k - 2))
+}
+
+print("Tiempo ejecución recursiva:")
+system.time({
+  # Calculamos el elemento n de forma individual
+  resultado_rec <- fib_recursiva(n)
+})
+```
+
+## 1.6 Definición matemática recurrente
+```{r}
+# --- Resolver consigna con bucle 'while' ---
+
+# Inicializamos la serie según la definición matemática
+fib <- c(0, 1)
+i <- 2 # Empezamos el conteo de iteraciones/posiciones
+
+system.time({
+  # El bucle sigue mientras el último número generado sea <= 1.000.000
+  while (fib[i] <= 1000000) {
+    i <- i + 1
+    # Definición recurrente: f(n+1) = f(n) + f(n-1)
+    fib[i] <- fib[i-1] + fib[i-2]
+  }
+})
+
+# --- Resultados ---
+cat("El primer número mayor a 1.000.000 es:", fib[i], "\n")
+cat("Se necesitaron", i - 1, "iteraciones (pasos) para superarlo.\n")
+
+# Mostramos los últimos elementos para verificar
+tail(fib)
+```
+
+
+## 1.7 Ordenación de un vector del Método burbuja
+```{r}
+# --- 1. Creamos un vector desordenado ---
+# Usamos un vector de 1000 números aleatorios
+set.seed(123) # Para que el resultado sea siempre el mismo
+vector_desordenado <- sample(1:1000, 1000)
+
+# --- 2. Implementación del Método Burbuja ---
+bubble_sort <- function(x) {
+  n <- length(x)
+  # El bucle externo recorre todo el vector
+  for (i in 1:(n - 1)) {
+    # El bucle interno compara pares adyacentes
+    for (j in 1:(n - i)) {
+      if (x[j] > x[j + 1]) {
+        # Intercambio de posición (el "burbujeo")
+        temp <- x[j]
+        x[j] <- x[j + 1]
+        x[j + 1] <- temp
+      }
+    }
+  }
+  return(x)
+}
+
+# --- 3. Medimos Performance del Burbuja vs R Nativo ---
+
+cat("Tiempo con Método Burbuja:\n")
+system.time({
+  vector_ordenado_burbuja <- bubble_sort(vector_desordenado)
+})
+
+cat("\nTiempo con función sort() nativa de R:\n")
+system.time({
+  vector_ordenado_R <- sort(vector_desordenado)
+})
+```
+
+## 1.8 La penintencia de Newton
+```{r}
+# Definimos el límite de la suma (1*10^7 para que no tarde demasiado en R)
+# Nota: 1*10^10 es un número extremadamente grande para un bucle for en R
+n <- 1e7 
+
+# --- MÉTODO 1: La "Penitencia" (Bucle For / Fuerza Bruta) ---
+# Este método suma uno por uno, como quería el profesor.
+system.time({
+  suma_iterativa <- 0
+  for (i in 1:n) {
+    suma_iterativa <- suma_iterativa + i
+  }
+})
+cat("Resultado Suma Iterativa:", suma_iterativa, "\n")
+
+# --- MÉTODO 2: La "Estrategia de Newton/Gauss" (Fórmula Analítica) ---
+# Usamos la suma de una progresión aritmética: (n * (n + 1)) / 2
+system.time({
+  suma_analitica <- (n * (n + 1)) / 2
+})
+cat("Resultado Suma Analítica:", suma_analitica, "\n")
+```
+## Agrupacion K-mean
+
+Medición de Performance: Agrupamiento K-MeansEn el análisis de datos industriales, no basta con agrupar los componentes; es imperativo evaluar qué tan "buenas" son esas agrupaciones. A diferencia del aprendizaje supervisado, donde comparamos predicciones contra etiquetas reales, en el Clustering medimos la calidad mediante la cohesión interna y la separación externa.1. Métricas de Evaluación InternaPara determinar si la segmentación de maquinaria tiene sentido estadístico, se utilizan principalmente dos indicadores:WSS (Within-Cluster Sum of Squares): Mide la suma de los cuadrados dentro de cada grupo. Representa la variabilidad interna. Un WSS bajo indica que los componentes dentro de un cluster son muy similares entre sí (alta cohesión).Coeficiente de Silueta ($s_i$): Es una medida que combina cohesión y separación. Su valor oscila entre $-1$ y $1$:$1$: El componente está muy bien ubicado en su cluster.$0$: El componente está en el límite entre dos clusters.$-1$: El componente probablemente ha sido asignado al grupo incorrecto.2. El Gráfico de Violín como Herramienta de ValidaciónSi bien métricas como el "Método del Codo" nos ayudan a elegir el número óptimo de clusters ($k$), el gráfico de violín es esencial para la interpretación física de los resultados.Este gráfico combina un diagrama de caja (boxplot) con una curva de densidad de probabilidad. En el contexto de mantenimiento industrial, nos permite visualizar:Distribución y Densidad: Podemos ver dónde se concentra la mayoría de los datos de sensores (vibración, temperatura) para cada grupo.Separación de Grupos: Si los "cuerpos" de los violines de diferentes clusters no se solapan significativamente, el algoritmo ha logrado identificar estados operativos claramente distintos (ej. Estado Normal vs. Falla Inminente).Detección de Anomalías: La extensión de las "colas" del violín permite identificar máquinas que, aunque pertenecen a un grupo, presentan valores extremos que requieren atención.
+
+```{r}
+# Librerías necesarias
+library(ggplot2)
+library(cluster)
+
+# 1. Simulación de datos de sensores (Normalizados)
+set.seed(123)
+vibracion <- c(rnorm(100, 2, 0.5), rnorm(100, 5, 0.8), rnorm(100, 8, 0.6))
+temperatura <- c(rnorm(100, 30, 5), rnorm(100, 50, 7), rnorm(100, 70, 5))
+df <- data.frame(vibracion, temperatura)
+
+# Escalamiento (Paso crítico mencionado en tu texto)
+df_scaled <- scale(df)
+
+# 2. Ejecución de K-means (k=3)
+fit <- kmeans(df_scaled, centers = 3, nstart = 25)
+df$cluster <- as.factor(fit$cluster)
+
+# 3. Medición de Performance: Coeficiente de Silueta
+sil <- silhouette(fit$cluster, dist(df_scaled))
+avg_sil <- mean(sil[, 3])
+cat("El coeficiente de silueta promedio es:", avg_sil)
+
+# 4. Visualización con Gráfico de Violín
+ggplot(df, aes(x = cluster, y = vibracion, fill = cluster)) +
+  geom_violin(trim = FALSE, alpha = 0.7) +
+  geom_boxplot(width = 0.1, fill = "white") +
+  labs(title = "Distribución de Vibración por Cluster Industrial",
+       subtitle = paste("Performance (Silueta):", round(avg_sil, 2)),
+       x = "Segmento de Maquinaria (Cluster)",
+       y = "Nivel de Vibración") +
+  theme_minimal()
+
+
+```
+
+
+## Matrices e Inversa
+
+En este ejercicio, crearemos una matriz cuadrada de 3x3 utilizando el valor de tu DNI 738 y otros valores para asegurar que la matriz sea invertible (que su determinante sea distinto de cero). Luego, utilizaremos la función 'solve' que es la estándar en R para obtener la matriz inversa.
+
+```{r}
+# 1. Definimos los datos de la matriz basándonos en tu DNI
+# Usamos una secuencia pequeña para completar los otros campos
+dni_val <- 738
+
+datos <- c(dni_val, 10, 15, 
+           2, 5, 8, 
+           7, 1, 9)
+
+A <- matrix(datos, nrow = 3, ncol = 3, byrow = TRUE)
+
+cat("### Matriz Original (A):\n")
+print(A)
+
+determinante <- det(A)
+cat("\nDeterminante de la matriz:", determinante, "\n")
+
+if (determinante != 0) {
+  A_inversa <- solve(A)
+  cat("\n### Matriz Inversa (A^-1):\n")
+  print(A_inversa)
+  
+  identidad <- round(A %*% A_inversa, 2)
+  cat("\n### Verificación (A * A^-1 = Identidad):\n")
+  print(identidad)
+} else {
+  cat("\nLa matriz es singular y no tiene inversa.")
+}
+```
+
